@@ -3,8 +3,8 @@ import React, {useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import Header from './Componentes/Header';
 import TodoList from './Componentes/ToDoList';
-import { NavigationContainer } from '@react-navigation/native';
-import {createStackNavigator } from '@react-navigation/stack';
+import { NavigationContainer } from 'react-navigation/native';
+import {createStackNavigator } from 'react-navigation/stack'
 import TelaAddTarefa from './Telas/addTarefa';
 
 const Stack = createStackNavigator(); 
@@ -31,7 +31,7 @@ export default function App() {
   const adicionaTarefa = (text) => {
     setTarefas((Tarefas) => [
       ...Tarefas,
-      { id: Date.now(), text: text, completado: false},
+      { id: Date.now(), text: text, completed: false},
     ]);
   
   };
@@ -50,7 +50,7 @@ export default function App() {
   <Stack.Screen
     opitions={{ headerShown: false }}
     name="addTarefa"
-    component={TelaAddTarefa}
+    componet={TelaAddTarefa}
     initialParams={{ addTarefa: adicionaTarefa }}>
     </Stack.Screen>
     </Stack.Navigator>

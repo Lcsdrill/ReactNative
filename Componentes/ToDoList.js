@@ -1,5 +1,5 @@
-import {useNavigation} from '@react-navigation/native';
-import { FlatList } from 'react-native/types';
+import {useNavigation} from './node_modules/@react-navigation/native';
+import { FlatList } from './node_modules/react-native/types';
 import TodoItem from './ToDoItem';
 
 const TodoList = ({itens, trocaEstado, deleta}) => {

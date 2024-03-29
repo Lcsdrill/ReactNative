@@ -1,6 +1,6 @@
 import react, {useState} from "react";
 import { View, TextInput, Button, StyleSheet } from "react-native";
-import Header from "./Header";
+import Header from "../Componentes/Header";
 import { DateTimePicker } from "@react-native-community/datetimepicker";
 import { Platform } from "expo-modules-core";
 

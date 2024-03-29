@@ -3,9 +3,11 @@ import React, {useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import Header from './Componentes/Header';
 import TodoList from './Componentes/ToDoList';
-import { NavigationContainer } from 'react-navigation/native';
-import {createStackNavigator } from 'react-navigation/stack'
+import { NavigationContainer } from './node_modules/@react-navigation/native';
+import {createStackNavigator } from './node_modules/@react-navigation/native'
 import TelaAddTarefa from './Telas/addTarefa';
+import TelaLogin from './Telas/login';
+import TelaAddUser from './Telas/addUser';
 
 const Stack = createStackNavigator(); 
 export default function App() {
@@ -37,8 +39,13 @@ export default function App() {
   };
   return (
     <NavigationContainer>
-      <Stack.Navigator>
-        <Stack.Screen name="Home" opitions={{ headerShown: false}}>
+      <Stack.Navigator initialRouteName='Login'>
+        <Stack.Screen
+          options={{ headerShown: false}}
+          name="Login"
+          component={TelaLogin}
+        />
+        <Stack.Screen name="Home" options={{ headerShown: false}}>
           {() => (  
     <View style={styles.container}>
       <Header />
@@ -48,7 +55,12 @@ export default function App() {
   )}
   </Stack.Screen>
   <Stack.Screen
-    opitions={{ headerShown: false }}
+    options={{ headerShown: false}}
+    name="addUser"
+    component={TelaAddUser}
+  />
+  <Stack.Screen
+    options={{ headerShown: false }}
     name="addTarefa"
     componet={TelaAddTarefa}
     initialParams={{ addTarefa: adicionaTarefa }}>

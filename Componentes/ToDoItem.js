@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
-import { View,Text,TouchableOpacity,StyleSheet,Switch, LayoutAnimation, UIManager, Platform } from "react-native";
+import { View,Text,TouchableOpacity,StyleSheet,Switch, LayoutAnimation, UIManager, Platform, PanResponder } from "react-native";
 import { Animated } from "react-native-web";
+import {PanResponder} from 'react-native'
 
 if (Platform.OS === 'android') {
   UIManager.setLayoutAnimationEnabledExperimental(true);
@@ -9,6 +10,26 @@ if (Platform.OS === 'android') {
 const TodoItem = ({Item, trocaEstado,deleta}) => {
   const [isExpanded, setIsExpanded] = useState(false);
   const animationValue = useRef(new Animated.Value(0)).current
+  const pan = useRef(new Animated.ValueXY()).current;
+
+  const PanResponder = useRef(PanResponder.create({
+    onMoveShouldSetPanResponder: () => true,
+    onPanResponderMove: Animated.event([null,{dx:pan.x}],
+                        { useNativeDriver: false }),
+    onPanResponderRelease: (_,gestureState) => {
+      if (gestureState.dx < -200) {
+        deleta(item.id)
+      }
+      else {
+        Animated.spring(
+          pan,
+          {toValue: {x: 0, y: 0},
+          useNativeDriver: false},
+        ).start()
+      }
+    },                    
+  })).current
+
   const expand = () => {
     LayoutAnimation.spring()
     setIsExpanded(!isExpanded)
@@ -22,19 +43,19 @@ const TodoItem = ({Item, trocaEstado,deleta}) => {
   }, [item.completado])
 
     return (
-      <Animated.View style={[styles.container, {opacity: animationValue}]}>
+      <Animated.View {...PanResponder.panHandlers}
+      style={[pan.getLayout(), styles.container, {opacity: animationValue}]}>
         <View style={styles.todoItem}>
             <Switch value={Item.completado}
                     onValueChange={() => trocaEstado(item.id)}>
             </Switch>
+            <view style={styles.textContainer}>
             <TouchableOpacity onPress={expand}>
               <Text style={item.completado ? styles.completedText : styles.text}>
                 {item.tarefa.nome}
               </Text>
             </TouchableOpacity>
-            <TouchableOpacity onPress={() => deleta(item.id)}>
-                <text style={styles.deleteButton}>Excluir</text>
-            </TouchableOpacity>
+            </view>
         </View>
         {isExpanded && (
           <View>
@@ -67,11 +88,16 @@ const styles = StyleSheet.create({
     completedText: {
         fontSize: 18,
         textDecorationLine: 'line-throught',
-        color: '#ccc'
+        
       },
       deleteButton: {
         color: 'red',
         fontSize: 18,
+      },
+
+      textContainer: {
+        flex: 1,
+         alignItems: 'center'
       },
   });
   
